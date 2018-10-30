@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/estilos.css">
+	<script src="js/funcionesMovimientoObjetos.js"></script>
+</head>
+<body onkeydown="startIntervalos(event)" onkeyup="stopIntervalos(event)">
+	<div id="cocheFlechas" style="top: 350px;left: 140px;">
+	    <img class="fotoCoche" src="imagenes/coche_amarillo.png">
+	</div>
+	<div id="cocheLetras" style="top: 350px;left: 70px;">
+		<img class="fotoCoche" src="imagenes/coche_rojo.png">
+	</div>
+	
+	<script type="text/javascript">
+        var coche_flechas = document.getElementById('cocheFlechas');
+        var coche_letras = document.getElementById('cocheLetras');
+
+        var velocidadAvance = 2;
+        var velocidadRotacion = 6;
+
+        var intervaloAdelanteCocheFlechas = null;
+        var intervaloAtrasCocheFlechas = null;
+        var intervaloIzquierdaCocheFlechas = null;
+        var intervaloDerechaCocheFlechas = null;
+
+        var intervaloAdelanteCocheLetras = null;
+        var intervaloAtrasCocheLetras = null;
+        var intervaloIzquierdaCocheLetras = null;
+        var intervaloDerechaCocheLetras = null;
+
+
+        function startIntervalos(event){
+            if(event.keyCode == 38 && intervaloAdelanteCocheFlechas === null){
+                intervaloAdelanteCocheFlechas = setInterval(desplazarSentidoPositivo, velocidadAvance, coche_flechas);
+            }
+            else if(event.keyCode == 40 && intervaloAtrasCocheFlechas === null){
+                intervaloAtrasCocheFlechas = setInterval(desplazarSentidoInverso, velocidadAvance, coche_flechas);
+            }
+            else if(event.keyCode == 37 && intervaloIzquierdaCocheFlechas == null){
+                if(intervaloAdelanteCocheFlechas != null){
+                    intervaloIzquierdaCocheFlechas = setInterval(rotarElemento,velocidadRotacion, coche_flechas , false);
+                }
+                else if(intervaloAtrasCocheFlechas != null){
+                    intervaloIzquierdaCocheFlechas = setInterval(rotarElemento, velocidadRotacion, coche_flechas, true);
+                }
+            }
+            else if(event.keyCode == 39 && intervaloDerechaCocheFlechas == null){
+                if(intervaloAdelanteCocheFlechas != null){
+                    intervaloDerechaCocheFlechas = setInterval(rotarElemento, velocidadRotacion, coche_flechas, true);
+                }
+                else if(intervaloAtrasCocheFlechas != null){
+                    intervaloDerechaCocheFlechas = setInterval(rotarElemento,velocidadRotacion, coche_flechas , false);
+                }
+            }
+            /*Letras W:87, S:83, A:65, D:68 del teclado*/
+            else if(event.keyCode == 87 && intervaloAdelanteCocheLetras === null){
+                intervaloAdelanteCocheLetras = setInterval(desplazarSentidoPositivo, velocidadAvance, coche_letras);
+            }
+            else if(event.keyCode == 83 && intervaloAtrasCocheLetras === null){
+                intervaloAtrasCocheLetras = setInterval(desplazarSentidoInverso, velocidadAvance, coche_letras);
+            }
+            else if(event.keyCode == 65 && intervaloIzquierdaCocheLetras == null){
+                if(intervaloAdelanteCocheLetras != null){
+                    intervaloIzquierdaCocheLetras = setInterval(rotarElemento,velocidadRotacion, coche_letras , false);
+                }
+                else if(intervaloAtrasCocheLetras != null){
+                    intervaloIzquierdaCocheLetras = setInterval(rotarElemento, velocidadRotacion, coche_letras, true);
+                }
+            }
+            else if(event.keyCode == 68 && intervaloDerechaCocheLetras == null){
+                if(intervaloAdelanteCocheLetras != null){
+                    intervaloDerechaCocheLetras = setInterval(rotarElemento, velocidadRotacion, coche_letras, true);
+                }
+                else if(intervaloAtrasCocheLetras != null){
+                    intervaloDerechaCocheLetras = setInterval(rotarElemento,velocidadRotacion, coche_letras , false);
+                }
+            }
+        }
+
+        function stopIntervalos(event){
+            if(event.keyCode == 38){
+                clearInterval(intervaloAdelanteCocheFlechas);
+                intervaloAdelanteCocheFlechas = null;
+                clearInterval(intervaloIzquierdaCocheFlechas);
+                intervaloIzquierdaCocheFlechas = null;
+                clearInterval(intervaloDerechaCocheFlechas);
+                intervaloDerechaCocheFlechas = null;
+            }
+            else if(event.keyCode == 40){
+                clearInterval(intervaloAtrasCocheFlechas);
+                intervaloAtrasCocheFlechas = null;
+                clearInterval(intervaloIzquierdaCocheFlechas);
+                intervaloIzquierdaCocheFlechas = null;
+                clearInterval(intervaloDerechaCocheFlechas);
+                intervaloDerechaCocheFlechas = null;
+            }
+            else if(event.keyCode == 37){
+                clearInterval(intervaloIzquierdaCocheFlechas);
+                intervaloIzquierdaCocheFlechas = null;
+            }
+            else if(event.keyCode == 39){
+                clearInterval(intervaloDerechaCocheFlechas);
+                intervaloDerechaCocheFlechas = null;
+            }
+			/*Letras W:87, S:83, A:65, D:68 del teclado*/
+            else if(event.keyCode == 87){
+                clearInterval(intervaloAdelanteCocheLetras);
+                intervaloAdelanteCocheLetras = null;
+                clearInterval(intervaloIzquierdaCocheLetras);
+                intervaloIzquierdaCocheLetras = null;
+                clearInterval(intervaloDerechaCocheLetras);
+                intervaloDerechaCocheLetras = null;
+            }
+            else if(event.keyCode == 83){
+                clearInterval(intervaloAtrasCocheLetras);
+                intervaloAtrasCocheLetras = null;
+                clearInterval(intervaloIzquierdaCocheLetras);
+                intervaloIzquierdaCocheLetras = null;
+                clearInterval(intervaloDerechaCocheLetras);
+                intervaloDerechaCocheLetras = null;
+            }
+            else if(event.keyCode == 65){
+                clearInterval(intervaloIzquierdaCocheLetras);
+                intervaloIzquierdaCocheLetras = null;
+            }
+            else if(event.keyCode == 68){
+                clearInterval(intervaloDerechaCocheLetras);
+                intervaloDerechaCocheLetras = null;
+            }
+        }
+	</script>
+</body>
+</html>

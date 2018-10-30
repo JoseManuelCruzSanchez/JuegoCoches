@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		body{
+			height: 600px;
+			background-image: url("circuito.jpg");
+			background-repeat: no-repeat;
+			background-size: cover;
+			margin:20px;
+		}
+		#fotoCoche{
+            height: 125px;
+        }
+        #coche{
+            position:absolute;
+            height: 180px;
+            transform: rotate(1deg);
+        }
+	</style>
+</head>
+<body onkeydown="desplazar(event);rotar(event)" onkeyup="stopIntervalos(event)">
+
+	<div id="coche" style="top: 350px;left: 80px;">
+	    <img id="fotoCoche" src="coche.png">
+	</div>
+
+	
+	<script type="text/javascript">
+		var coche = document.getElementById('coche');
+		var velocidadAvance = 2;
+		var velocidadRotacion = 6;
+
+		var intervaloAdelante = null;
+		var intervaloAtras = null;
+		var intervaloIzquierda = null;
+		var intervaloDerecha = null;
+
+		var angulo;
+		var eje_y;
+		var eje_x;
+		var regla_de_tres = 1/90;
+
+		function desplazar(event){
+			if(event.keyCode == 38 && intervaloAdelante === null){
+				intervaloAdelante = setInterval(function(){
+					angulo = getCurrentRotation(coche);
+					if(angulo == 0){
+                        eje_y = 1;
+                        coche.style.top = Number(coche.style.top.substring(0,coche.style.top.length-2))-eje_y + 'px';
+					}
+					else if(angulo > -90 && angulo < 0){
+						eje_x = (angulo*regla_de_tres);
+						eje_y = 1+eje_x;
+						coche.style.top = Number(coche.style.top.substring(0,coche.style.top.length-2))-eje_y + 'px';
+						coche.style.left = Number(coche.style.left.substring(0,coche.style.left.length-2))+eje_x + 'px';
+					}
+					else if(angulo > -180 && angulo < -90){
+						eje_y = ((angulo+90)*regla_de_tres);
+						eje_x = 1+eje_y;
+						coche.style.top = Number(coche.style.top.substring(0,coche.style.top.length-2))-eje_y + 'px';
+						coche.style.left = Number(coche.style.left.substring(0,coche.style.left.length-2))-eje_x + 'px';
+					}
+					else if(angulo > 0 && angulo < 90){
+                        eje_x = (angulo*regla_de_tres);
+                        eje_y = 1-eje_x;
+                        coche.style.top = Number(coche.style.top.substring(0,coche.style.top.length-2))-eje_y + 'px';
+                        coche.style.left = Number(coche.style.left.substring(0,coche.style.left.length-2))+eje_x + 'px';
+					}
+                    else if(angulo > 90 && angulo < 180){
+                        eje_y = (angulo*regla_de_tres)-1;
+                        eje_x = 1-eje_y;
+                        coche.style.top = Number(coche.style.top.substring(0,coche.style.top.length-2))+eje_y + 'px';
+                        coche.style.left = Number(coche.style.left.substring(0,coche.style.left.length-2))+eje_x + 'px';
+                    }
+				},velocidadAvance);
+			}
+			else if(event.keyCode == 40 && intervaloAtras === null){
+                intervaloAtras = setInterval(function(){
+                    angulo = getCurrentRotation(coche);
+                    if(angulo > -90 && angulo < 0){
+                        eje_x = (angulo*regla_de_tres);
+                        eje_y = 1+eje_x;
+                        coche.style.top = Number(coche.style.top.substring(0,coche.style.top.length-2))+eje_y + 'px';
+                        coche.style.left = Number(coche.style.left.substring(0,coche.style.left.length-2))-eje_x + 'px';
+                    }
+                    else if(angulo > -180 && angulo < -90){
+                        eje_y = ((angulo+90)*regla_de_tres);
+                        eje_x = 1+eje_y;
+                        coche.style.top = Number(coche.style.top.substring(0,coche.style.top.length-2))+eje_y + 'px';
+                        coche.style.left = Number(coche.style.left.substring(0,coche.style.left.length-2))+eje_x + 'px';
+                    }
+                    else if(angulo > 0 && angulo < 90){
+                        eje_x = (angulo*regla_de_tres);
+                        eje_y = 1-eje_x;
+                        coche.style.top = Number(coche.style.top.substring(0,coche.style.top.length-2))+eje_y + 'px';
+                        coche.style.left = Number(coche.style.left.substring(0,coche.style.left.length-2))-eje_x + 'px';
+                    }
+                    else if(angulo > 90 && angulo < 180){
+                        eje_y = (angulo*regla_de_tres)-1;
+                        eje_x = 1-eje_y;
+                        coche.style.top = Number(coche.style.top.substring(0,coche.style.top.length-2))-eje_y + 'px';
+                        coche.style.left = Number(coche.style.left.substring(0,coche.style.left.length-2))-eje_x + 'px';
+                    }
+                },velocidadAvance);
+			}
+		}
+
+		function rotar(event) {
+			if(event.keyCode == 37 && intervaloIzquierda == null){
+			    if(intervaloAdelante != null){
+                    intervaloIzquierda = setInterval(function () {
+                        coche.style.transform = "rotate(" + (getCurrentRotation(coche)-1) + "deg)";
+                    },velocidadRotacion);
+				}
+				else if(intervaloAtras != null){
+                    intervaloIzquierda = setInterval(function () {
+                        coche.style.transform = "rotate(" + (getCurrentRotation(coche)+1) + "deg)";
+                    },velocidadRotacion);
+				}
+			}
+			else if(event.keyCode == 39 && intervaloDerecha == null){
+                if(intervaloAdelante != null){
+                    intervaloDerecha = setInterval(function () {
+                        coche.style.transform = "rotate(" + (getCurrentRotation(coche)+1) + "deg)";
+                    },velocidadRotacion);
+                }
+                else if(intervaloAtras != null){
+                    intervaloDerecha = setInterval(function () {
+                        coche.style.transform = "rotate(" + (getCurrentRotation(coche)-1) + "deg)";
+                    },velocidadRotacion);
+				}
+			}
+        }
+
+		function stopIntervalos(event){
+			if(event.keyCode == 38){
+				clearInterval(intervaloAdelante);
+				intervaloAdelante = null;
+                clearInterval(intervaloIzquierda);
+                intervaloIzquierda = null;
+                clearInterval(intervaloDerecha);
+                intervaloDerecha = null;
+			}
+            else if(event.keyCode == 40){
+                clearInterval(intervaloAtras);
+                intervaloAtras = null;
+                clearInterval(intervaloIzquierda);
+                intervaloIzquierda = null;
+                clearInterval(intervaloDerecha);
+                intervaloDerecha = null;
+            }
+            else if(event.keyCode == 37){
+                clearInterval(intervaloIzquierda);
+                intervaloIzquierda = null;
+			}
+            else if(event.keyCode == 39){
+				clearInterval(intervaloDerecha);
+				intervaloDerecha = null;
+            }
+		}
+
+		function getCurrentRotation( elid ) {
+        var el = document.getElementById(elid);
+        var st = window.getComputedStyle(elid, null);
+        var tr = st.getPropertyValue("-webkit-transform") ||
+            st.getPropertyValue("-moz-transform") ||
+            st.getPropertyValue("-ms-transform") ||
+            st.getPropertyValue("-o-transform") ||
+            st.getPropertyValue("transform") ||
+            "fail...";
+
+        if( tr !== "none") {
+            //console.log('Matrix: ' + tr);
+            var values = tr.split('(')[1];
+            values = values.split(')')[0];
+            values = values.split(',');
+            var a = values[0];
+            var b = values[1];
+            var c = values[2];
+            var d = values[3];
+
+            var scale = Math.sqrt(a*a + b*b);
+
+            // First option, don't check for negative result
+            // Second, check for the negative result
+            /**/
+            var radians = Math.atan2(b, a);
+            var angle = Math.round( radians * (180/Math.PI));
+            /*/
+             var radians = Math.atan2(b, a);
+             if ( radians < 0 ) {
+             radians += (2 * Math.PI);
+             }
+             var angle = Math.round( radians * (180/Math.PI));
+             /**/
+
+        } else {
+            var angle = 0;
+        }
+        console.log(angle)
+        return angle;
+        // works!
+        //console.log('Rotate: ' + angle + 'deg');
+        //$('#results').append('<p>Rotate: ' + angle + 'deg</p>');
+    }
+	</script>
+</body>
+</html>

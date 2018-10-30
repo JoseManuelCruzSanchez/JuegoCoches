@@ -1,0 +1,23 @@
+body{
+    height: 600px;
+    background-image: url("../imagenes/circuito.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin:20px;
+}
+.fotoCoche{
+    height: 80px;
+    /*border: 1px solid yellow;*/
+}
+#cocheFlechas{
+    position:absolute;
+    height: 110px;
+    transform: rotate(0deg);
+    /*border: 1px solid red;*/
+}
+#cocheLetras{
+    position:absolute;
+    height: 110px;
+    transform: rotate(0deg);
+    /*border: 1px solid red;*/
+}
